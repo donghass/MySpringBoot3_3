@@ -74,5 +74,6 @@ public class MyRunner implements ApplicationRunner {
         logger.info(properties.getName());
         logger.debug("-----debug-----");
         logger.debug(properties.getName());
+
     }
 }
