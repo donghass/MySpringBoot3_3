@@ -1,6 +1,5 @@
 package com.basic.myspringboot.security.service;
 
-import com.basic.myspringboot.security.models.UserInfo;
 import com.basic.myspringboot.security.models.UserInfoRepository;
 import com.basic.myspringboot.security.models.UserInfoUserDetails;
 import org.springframework.beans.factory.annotation.Autowired;

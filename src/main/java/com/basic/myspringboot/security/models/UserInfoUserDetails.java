@@ -1,6 +1,5 @@
 package com.basic.myspringboot.security.models;
 
-import com.basic.myspringboot.security.models.UserInfo;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
