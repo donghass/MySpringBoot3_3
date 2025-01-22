@@ -6,6 +6,7 @@ import com.basic.myspringboot.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -29,11 +30,14 @@ public class UserRestController {
     }
 
     @GetMapping
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')") // 관리자 Role 권한만 가능
     public List<User> getUsers() {
         return userRepository.findAll();
     }
 
+
     @GetMapping("/{id}")
+    @PreAuthorize("hasAuthority('ROLE_USER')")  // 일반 사용자 Role 권한이 있으면 가능
 //    public User getUserById(@PathVariable Long id){
     public User getUserById(@PathVariable("id") Long userId){
         return getUser(userId);
@@ -68,4 +72,8 @@ public class UserRestController {
         return ResponseEntity.ok("ID = " + id + " User Deleted OK!");
     }
 
+    @GetMapping("/welcome")
+    public String welcome() {
+        return "Welcome this endpoint is not secure";
+    }
 }
