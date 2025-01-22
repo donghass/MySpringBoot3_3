@@ -5,6 +5,7 @@ import com.basic.myspringboot.exception.BusinessException;
 import com.basic.myspringboot.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -35,8 +36,36 @@ public class UserRestController {
     @GetMapping("/{id}")
 //    public User getUserById(@PathVariable Long id){
     public User getUserById(@PathVariable("id") Long userId){
+        return getUser(userId);
+    }
+
+    private User getUser(Long userId) {
         return userRepository.findById(userId) //Optional<User>
                 // orElseThrow(supplier) Supplier 의 추상메서드 T get()
-                .orElseThrow(()-> new BusinessException("데이터가 없습니다.", HttpStatus.NOT_FOUND));
+                .orElseThrow(() -> new BusinessException("데이터가 없습니다.", HttpStatus.NOT_FOUND));
     }
+
+    @PatchMapping("/{email}/")
+    public User updateUserByEmail(@PathVariable String email, @RequestBody User userDetail){
+        // email 존재유무 조회
+        User existUser = userRepository.findByEmail(email)
+                .orElseThrow(() -> new BusinessException("데이터가 없습니다.", HttpStatus.NOT_FOUND));
+
+        existUser.setName(userDetail.getName());
+        return userRepository.save(existUser);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteUser(@PathVariable Long id) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new BusinessException("User Not Found", HttpStatus.NOT_FOUND));
+        userRepository.delete(user);
+//return ResponseEntity.ok(user);
+        return getOk(id);
+    }
+
+    private static ResponseEntity<String> getOk(Long id) {
+        return ResponseEntity.ok("ID = " + id + " User Deleted OK!");
+    }
+
 }
